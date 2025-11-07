@@ -1,0 +1,68 @@
+{
+  "aside": {
+    "myTasks": "Mis tareas",
+    "estadistics": "Estadísticas",
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "languages": "Idiomas"
+  },
+
+  "header": {
+    "myTasksTitle": "Mis tareas",
+    "createTaskButton": "Crear tarea"
+  },
+
+  "tableHeaderActions": {
+    "viewButton": "Vista",
+    "viewButtonModal": {
+      "tableView": "Tabla"
+    },
+    "filterButton": "Filtrar",
+    "filterButtonModal": {
+      "priority": "Prioridad",
+      "status": "Estado"
+    }
+  },
+
+  "pagination": {
+    "showPerPage": "Mostrar por página",
+    "totalTask": "Tareas totales"
+  },
+
+  "notificationModal": {
+    "title": "Notificaciones",
+    "markAllAsRead": "Marcar todas leídas",
+    "nullNotification": "Aun no has recibido notificaciones"
+  },
+
+  "tableHeader": {
+    "subject": "Titulo",
+    "description": "Descripcion",
+    "priority": "Prioridad",
+    "status": "Estado"
+  },
+
+  "createTaskModal": {
+    "title": "Crea tus tareas",
+    "addTitle": "Agregar titulo",
+    "addDescription": "Agregar descripcion",
+    "selectPriority": "Selecciona su prioridad",
+    "createButton": "Crear",
+    "titleInpuPlaceholder": "Titulo de la tarea",
+    "descriptionInpuPlaceholder": "Descripcion de la tarea"
+  },
+
+  "inputPlaceholder": "Buscar tareas",
+
+  "taskActions": {
+    "deleteButton": "Eliminar tarea",
+    "editTask": "Editar tarea"
+  },
+
+  "kanban": {
+    "toDoTitle": "Por hacer",
+    "inProgressTitle": "En progreso",
+    "ClosedTitle": "Completado"
+  }
+}

@@ -1,0 +1,121 @@
+/* MOBILE ASIDE ANIMATION */
+
+@media (max-width: 1279px) {
+  .showAside {
+    animation: asideShow 0.5s ease both;
+  }
+
+  .hideAside {
+    animation: asideHide 0.5s ease both;
+  }
+
+  @keyframes asideShow {
+    from {
+      transform: translateX(-300px);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes asideHide {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-300px);
+    }
+  }
+}
+
+/* TOAST ANIMATION */
+
+.showToast {
+  animation: showToastModal 0.5s ease both;
+}
+
+.hideToast {
+  animation: hideToastModal 0.5s ease both;
+}
+
+@keyframes showToastModal {
+  from {
+    transform: translateY(100px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hideToastModal {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(200px);
+  }
+}
+
+/* CREATE TASK MODAL ANIMATION */
+
+.showCreateModal {
+  animation: showToastModal 0.5s ease both;
+}
+
+.hideCreateModal {
+  animation: hideToastModal 0.5s ease both;
+}
+
+/* NOTIFICATION MODAL ANIMATION */
+
+@keyframes showNotiModal {
+  from {
+    transform: translateY(-300px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hideNotiModal {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-350px);
+  }
+}
+
+.showNotiModal {
+  animation: showNotiModal forwards 0.5s ease;
+}
+
+.hideNotiModal {
+  animation: hideNotiModal forwards 0.5s ease;
+}
+
+.removeModal {
+  display: none;
+}
+
+@keyframes ShowLanguageModal {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.showLanguageModal {
+  animation: ShowLanguageModal forwards 0.5s ease;
+}

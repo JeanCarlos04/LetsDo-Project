@@ -1,0 +1,68 @@
+{
+  "aside": {
+    "myTasks": "My tasks",
+    "estadistics": "Statistics",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "languages": "Languages"
+  },
+
+  "header": {
+    "myTasksTitle": "My tasks",
+    "createTaskButton": "Create task"
+  },
+
+  "tableHeaderActions": {
+    "viewButton": "View",
+    "viewButtonModal": {
+      "tableView": "Table"
+    },
+    "filterButton": "Filter",
+    "filterButtonModal": {
+      "priority": "Priority",
+      "status": "Status"
+    }
+  },
+
+  "pagination": {
+    "showPerPage": "Show per page",
+    "totalTask": "Total tasks"
+  },
+
+  "notificationModal": {
+    "title": "Notifications",
+    "markAllAsRead": "Mark all as read",
+    "nullNotification": "You haven't received any notifications yet"
+  },
+
+  "tableHeader": {
+    "subject": "Title",
+    "description": "Description",
+    "priority": "Priority",
+    "status": "Status"
+  },
+
+  "createTaskModal": {
+    "title": "Create your tasks",
+    "addTitle": "Add title",
+    "addDescription": "Add description",
+    "selectPriority": "Select its priority",
+    "createButton": "Create",
+    "titleInpuPlaceholder": "Task title",
+    "descriptionInpuPlaceholder": "Task description"
+  },
+
+  "inputPlaceholder": "Search tasks",
+
+  "taskActions": {
+    "deleteButton": "Delete task",
+    "editTask": "Edit task"
+  },
+
+  "kanban": {
+    "toDoTitle": "To do",
+    "inProgressTitle": "In progress",
+    "ClosedTitle": "Completed"
+  }
+}
