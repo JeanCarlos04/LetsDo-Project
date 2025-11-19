@@ -20,7 +20,7 @@ function Home() {
       <div className="flex max-w-screen h-screen">
         <Aside />
         <div className="flex w-full flex-col gap-8">
-          <Header title="Settings" TitleIcon={FaGear} />
+          <Header headerLocation="home" title="Settings" TitleIcon={FaGear} />
           <main className="dark:bg-black 2xl:px-12 xl:px-6 p-6 flex flex-col gap-10">
             <section className="p-4 bg-white flex flex-col self-start rounded-md">
               <div>

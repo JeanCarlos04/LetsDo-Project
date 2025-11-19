@@ -1,7 +1,16 @@
-import { createContext, useEffect, type ReactNode, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  type ReactNode,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import type { UserType } from "../types/UsersType";
 import type { TasksType } from "../types/TasksType";
 import type { ToastModal } from "../components/ToastModal";
+import type { Sections } from "../components/SectionList";
+import { useNavigate } from "react-router-dom";
 
 type ContextProps = {
   children: ReactNode;
@@ -27,7 +36,10 @@ type ContextTypes = {
   showModal: ModalState;
   setShowModal: React.Dispatch<React.SetStateAction<ModalState>>;
   getTasks: TasksType[];
-  addTask: (taskValues: UpdateTaskAtributtes) => void;
+  addTask: (
+    taskValues: UpdateTaskAtributtes,
+    sectionId: Sections["_id"]
+  ) => void;
   updateTask: (taskId: TasksType["_id"], updates: UpdateTaskAtributtes) => void;
   setShowTableModals: React.Dispatch<
     React.SetStateAction<{
@@ -39,6 +51,8 @@ type ContextTypes = {
       headerFilterModal: boolean;
       notificationModal: boolean;
       asideLanguageModal: boolean;
+      profileModal: boolean;
+      updateProfileModal: boolean;
     }>
   >;
   showTableModals: {
@@ -50,6 +64,8 @@ type ContextTypes = {
     headerFilterModal: boolean;
     notificationModal: boolean;
     asideLanguageModal: boolean;
+    profileModal: boolean;
+    updateProfileModal: boolean;
   };
   filteredTasks: TasksType[];
   handleFilterTasks: (queryValue: string) => void;
@@ -81,6 +97,12 @@ type ContextTypes = {
   setToastModal: React.Dispatch<React.SetStateAction<ToastModal | undefined>>;
   toastModal: ToastModal | undefined;
   refreshUI: () => void;
+  setNavigateSection: Dispatch<SetStateAction<string | undefined>>;
+  navigateSection: string | undefined;
+  setCurrentSection: Dispatch<SetStateAction<string | undefined>>;
+  currentSection: string | undefined;
+  handleCreateSections: (title: string, description: string) => void;
+  sendProfileImg: (file: File) => Promise<void>;
 };
 
 const defaultValues: ContextTypes = {
@@ -104,6 +126,8 @@ const defaultValues: ContextTypes = {
     headerFilterModal: false,
     notificationModal: false,
     asideLanguageModal: false,
+    profileModal: false,
+    updateProfileModal: false,
   },
   filteredTasks: [],
   handleFilterTasks: () => {},
@@ -126,12 +150,18 @@ const defaultValues: ContextTypes = {
   setToastModal: () => {},
   toastModal: undefined,
   refreshUI: () => {},
+  setNavigateSection: () => {},
+  navigateSection: undefined,
+  setCurrentSection: () => {},
+  currentSection: undefined,
+  handleCreateSections: () => {},
+  sendProfileImg: async () => {},
 };
 
 const MainContext = createContext(defaultValues);
 
 const MainContextProvider = ({ children }: ContextProps) => {
-  const [myProfile, setMyPrfoile] = useState<UserType>();
+  const [myProfile, setMyProfile] = useState<UserType>();
   const [showModal, setShowModal] = useState<ModalState>({
     show: false,
     mode: null,
@@ -147,7 +177,10 @@ const MainContextProvider = ({ children }: ContextProps) => {
     headerFilterModal: false,
     notificationModal: false,
     asideLanguageModal: false,
+    profileModal: false,
+    updateProfileModal: false,
   });
+  const [navigateSection, setNavigateSection] = useState<Sections["_id"]>();
   const [filteredTasks, setFilteredTasks] = useState<TasksType[]>([]);
   const [getTaskId, setGetTaskId] = useState<TasksType["_id"] | null>(null);
   const [showAside, setShowAside] = useState(true);
@@ -161,15 +194,25 @@ const MainContextProvider = ({ children }: ContextProps) => {
     InProgress: false,
     closed: false,
   });
+  const [currentSection, setCurrentSection] = useState<Sections["_id"]>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3000/getProfile", {
       method: "GET",
       credentials: "include",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        {
+          if (!res.ok) {
+            navigate("/login");
+            throw new Error("Error desconocido");
+          }
+          return res.json();
+        }
+      })
       .then((data) => {
-        setMyPrfoile(data);
+        setMyProfile(data);
         setGetTasks(data.tasks);
       });
   }, []);
@@ -181,15 +224,18 @@ const MainContextProvider = ({ children }: ContextProps) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setMyPrfoile(data);
+        setMyProfile(data);
         setGetTasks(data.tasks);
       });
   };
 
-  const addTask = (taskValues: UpdateTaskAtributtes) => {
+  const addTask = (
+    taskValues: UpdateTaskAtributtes,
+    sectionId: Sections["_id"]
+  ) => {
     const { title, description, priority } = taskValues;
 
-    fetch(`http://localhost:3000/createTask/${myProfile?._id}`, {
+    fetch(`http://localhost:3000/createTask/${sectionId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -228,7 +274,7 @@ const MainContextProvider = ({ children }: ContextProps) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: "Task updated",
-          description: `The task ${updates.description} has been updated`,
+          description: `The task ${updates.title} has been updated`,
         }),
       })
         .then((res) => res.json())
@@ -251,6 +297,30 @@ const MainContextProvider = ({ children }: ContextProps) => {
       .then(() => refreshUI());
 
     setToastModal("Deleted Task succesfully");
+  };
+
+  const handleCreateSections = (title: string, description: string) => {
+    fetch(`http://localhost:3000/createSection/${myProfile?._id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title, description: description }),
+    })
+      .then((res) => res.json())
+      .then(() => refreshUI());
+
+    setToastModal("Section created succesfully");
+  };
+
+  const sendProfileImg = async (file: File) => {
+    const formData = new FormData();
+    if (file) formData.append("avatar_url", file);
+
+    fetch(`http://localhost:3000/uploadImg/${myProfile?._id}`, {
+      method: "PATCH",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then(() => refreshUI());
   };
 
   return (
@@ -278,6 +348,12 @@ const MainContextProvider = ({ children }: ContextProps) => {
         toastModal,
         setToastModal,
         refreshUI,
+        navigateSection,
+        setNavigateSection,
+        currentSection,
+        setCurrentSection,
+        handleCreateSections,
+        sendProfileImg,
       }}
     >
       {children}

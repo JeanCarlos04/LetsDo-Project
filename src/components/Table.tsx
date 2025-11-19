@@ -9,28 +9,34 @@ import SelectStatus from "./SelectStatus";
 import usePagination from "../hooks/usePagination";
 import Pagination from "./Pagination";
 import HeaderActions from "./HeaderActions";
-import { FaCircleExclamation, FaEllipsis, FaPlus } from "react-icons/fa6";
+import {
+  FaCircleExclamation,
+  FaEllipsis,
+  FaPlus,
+  FaCalendarXmark,
+} from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import type { Sections } from "./SectionList";
 
-function Table() {
-  const {
-    getTasks,
-    setShowTableModals,
-    showTableModals,
-    filteredTasks,
-    filter,
-  } = useContextHook();
-  const [tasks, setTasks] = useState<TasksType[]>(getTasks);
+type TableProps = {
+  sectionData: Sections;
+};
+
+function Table({ sectionData }: TableProps) {
+  const { tasks } = sectionData;
+  const [task, setTask] = useState<TasksType[]>([]);
+  const { setShowTableModals, showTableModals, filteredTasks, filter } =
+    useContextHook();
   const { t } = useTranslation();
 
   useEffect(() => {
-    let baseTask = getTasks;
+    let baseTask = tasks;
 
     if (filteredTasks.length > 0) {
       baseTask = filteredTasks;
     }
 
-    setTasks(
+    setTask(
       baseTask.filter((task) => {
         const isMatchPriority =
           (task.priority === "low" && filter.low) ||
@@ -47,7 +53,7 @@ function Table() {
         return isMatchPriority && statusMatch;
       })
     );
-  }, [filteredTasks, getTasks, filter]);
+  }, [filteredTasks, tasks, filter]);
 
   const {
     firstIndex,
@@ -57,115 +63,130 @@ function Table() {
     currentPage,
     setItemsPerPage,
     itemsPerPage,
-  } = usePagination(getTasks);
+  } = usePagination(filteredTasks.length > 0 ? filteredTasks : tasks);
 
   return (
     <>
-      <section className="flex flex-col gap-6 pb-8 w-full">
-        <header className="flex flex-col gap-2">
-          <h2 className="font-bold text-xl">Organizar proyecto FlowUp</h2>
-          <hr className="text-[#f0f0f0] border-1" />
-        </header>
+      {task.length < 1 ? (
+        <section className="flex flex-col items-center gap-6 text-gray-500 h-[300px] justify-center">
+          <p className="font-medium text-2xl">
+            You don't have task for this section yet.
+          </p>
+          <FaCalendarXmark className="text-gray-500 text-[50px]" />
+        </section>
+      ) : (
+        <>
+          {" "}
+          <section className="flex flex-col gap-6 pb-8 w-full">
+            <header className="flex flex-col gap-2">
+              <h2 className="font-bold text-xl">{sectionData.title}</h2>
+              <hr className="text-[#f0f0f0] border" />
+            </header>
 
-        <div>
-          <HeaderActions />
+            <div>
+              <HeaderActions />
 
-          <div className="overflow-x-auto md:overflow-visible">
-            <table
-              role="table"
-              className="md:w-full shadow-md border-1 border-gray-200"
-            >
-              <thead className=" bg-gray-100 h-[40px] border-b-1 border-gray-300">
-                <tr className="text-start  h-[45px]">
-                  <th className="font-medium text-start pl-5 ">
-                    {t("tableHeader.subject")}
-                  </th>
-                  <th className="font-medium text-start">
-                    {" "}
-                    {t("tableHeader.description")}
-                  </th>
-                  <th className="font-medium text-start">
-                    <div className="h-full flex items-center gap-2">
-                      {t("tableHeader.priority")}{" "}
-                      <FaCircleExclamation className="text-gray-500" />
-                    </div>
-                  </th>
-                  <th className="font-medium text-start">
-                    {" "}
-                    {t("tableHeader.status")}
-                  </th>
-                  <th className="font-medium pr-4">
-                    <FaPlus className="text-gray-500 text-sm" />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.slice(firstIndex, lastIndex).map((task) => {
-                  return (
-                    <tr
-                      key={task._id}
-                      className="bg-white overflow-hidden h-[55px] border-b-1 hover:bg-gray-100 border-gray-300 cursor-pointer duration-75"
-                    >
-                      <td className="pl-5 text-[14px] text-nowrap 2xl:text-[16px]">
-                        {task.title}
-                      </td>
-                      <td className="overflow-ellipsis text-[14px] px-4 min-w-[200px] 2xl:text-[16px]">
-                        {task.description}
-                      </td>
-                      <td className="relative md:p-0 pr-4">
-                        <SelectPriority task={task} />
-                        {showTableModals.taskID === task._id && (
-                          <UpdatePriority
-                            task={task._id}
-                            showModal={showTableModals.priorityModal}
-                          />
-                        )}
-                      </td>
-                      <td className="relative md:p-0 pr-4">
-                        <SelectStatus task={task} />
-                        {showTableModals.taskID === task._id && (
-                          <UpdateStatus
-                            task={task._id}
-                            showModal={showTableModals.statusModal}
-                          />
-                        )}
-                      </td>
-                      <td
-                        onClick={() =>
-                          setShowTableModals({
-                            ...showTableModals,
-                            taskID: task._id,
-                            moreActionsModal: !showTableModals.moreActionsModal,
-                          })
-                        }
-                      >
-                        <button>
-                          <FaEllipsis className="text-gray-500 cursor-pointer" />
-                        </button>
-                        {showTableModals.taskID === task._id &&
-                          showTableModals.moreActionsModal === true && (
-                            <TaskActions
-                              taskId={task._id}
-                              showActionModal={showTableModals.moreActionsModal}
-                            />
-                          )}
-                      </td>
+              <div className="overflow-x-auto md:overflow-visible">
+                <table
+                  role="table"
+                  className="md:w-full shadow-md border border-gray-200"
+                >
+                  <thead className=" bg-gray-100 h-10 border-b border-gray-300">
+                    <tr className="text-start  h-[45px]">
+                      <th className="font-medium text-start pl-5 ">
+                        {t("tableHeader.subject")}
+                      </th>
+                      <th className="font-medium text-start">
+                        {" "}
+                        {t("tableHeader.description")}
+                      </th>
+                      <th className="font-medium text-start">
+                        <div className="h-full flex items-center gap-2">
+                          {t("tableHeader.priority")}{" "}
+                          <FaCircleExclamation className="text-gray-500" />
+                        </div>
+                      </th>
+                      <th className="font-medium text-start">
+                        {" "}
+                        {t("tableHeader.status")}
+                      </th>
+                      <th className="font-medium pr-4">
+                        <FaPlus className="text-gray-500 text-sm" />
+                      </th>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-      <Pagination
-        itemsPerPage={itemsPerPage}
-        setItemsPerPage={setItemsPerPage}
-        allTasks={getTasks}
-        pages={buttons}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+                  </thead>
+                  <tbody>
+                    {task.slice(firstIndex, lastIndex).map((task) => {
+                      return (
+                        <tr
+                          key={task._id}
+                          className="bg-white overflow-hidden h-[55px] border-b hover:bg-gray-100 border-gray-300 cursor-pointer duration-75"
+                        >
+                          <td className="pl-5 text-[14px] text-nowrap 2xl:text-[16px]">
+                            {task.title}
+                          </td>
+                          <td className="overflow-ellipsis text-[14px] px-4 min-w-[200px] 2xl:text-[16px]">
+                            {task.description}
+                          </td>
+                          <td className="relative md:p-0 pr-4">
+                            <SelectPriority task={task} />
+                            {showTableModals.taskID === task._id && (
+                              <UpdatePriority
+                                task={task._id}
+                                showModal={showTableModals.priorityModal}
+                              />
+                            )}
+                          </td>
+                          <td className="relative md:p-0 pr-4">
+                            <SelectStatus task={task} />
+                            {showTableModals.taskID === task._id && (
+                              <UpdateStatus
+                                task={task._id}
+                                showModal={showTableModals.statusModal}
+                              />
+                            )}
+                          </td>
+                          <td
+                            onClick={() =>
+                              setShowTableModals({
+                                ...showTableModals,
+                                taskID: task._id,
+                                moreActionsModal:
+                                  !showTableModals.moreActionsModal,
+                              })
+                            }
+                          >
+                            <button>
+                              <FaEllipsis className="text-gray-500 cursor-pointer" />
+                            </button>
+                            {showTableModals.taskID === task._id &&
+                              showTableModals.moreActionsModal === true && (
+                                <TaskActions
+                                  taskId={task._id}
+                                  showActionModal={
+                                    showTableModals.moreActionsModal
+                                  }
+                                />
+                              )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
+            allTasks={tasks}
+            pages={buttons}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      )}
     </>
   );
 }

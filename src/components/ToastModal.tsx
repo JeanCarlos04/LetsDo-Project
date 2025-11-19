@@ -5,7 +5,8 @@ export type ToastModal =
   | "Updated task succesfully"
   | "Task created succesfully"
   | "Logged succesfully"
-  | "Registered succesfully";
+  | "Registered succesfully"
+  | "Section created succesfully";
 
 import { useEffect, useState } from "react";
 import useContextHook from "../hooks/useContextHook";
@@ -37,7 +38,8 @@ function ToastModal() {
     <>
       <article
         className={`${
-          toastModal === "Task created succesfully"
+          toastModal === "Task created succesfully" ||
+          toastModal === "Section created succesfully"
             ? "bg-green-400 border-green-500"
             : toastModal === "Deleted Task succesfully"
             ? "bg-red-400 border-red-500"

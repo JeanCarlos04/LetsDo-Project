@@ -9,7 +9,7 @@ function FilterTask() {
   return (
     <>
       {showTableModals.headerFilterModal && (
-        <article className="flex absolute gap-8 p-6 bg-white rounded-lg z-[300]">
+        <article className="flex absolute gap-8 p-6 bg-white rounded-lg z-300">
           <div className="flex flex-col gap-4">
             <h2 className="text-xl font-medium flex items-center gap-3">
               {t("tableHeaderActions.filterButtonModal.priority")}{" "}
@@ -20,7 +20,7 @@ function FilterTask() {
                 checked={filter.low}
                 onChange={() => setFilter({ ...filter, low: !filter.low })}
                 type="checkbox"
-                className="appearance-none checked:bg-green-400 checked:size-[16px] rounded-[5px] border-2 border-gray-500 size-[16px]"
+                className="appearance-none checked:bg-green-400 checked:size-4 rounded-[5px] border-2 border-gray-500 size-4"
               />
               <p className="font-medium text-nowrap">Low</p>
             </div>
@@ -32,7 +32,7 @@ function FilterTask() {
                 }
                 checked={filter.medium}
                 type="checkbox"
-                className="appearance-none checked:bg-green-400 checked:size-[16px] rounded-[5px] border-2 border-gray-500 size-[16px]"
+                className="appearance-none checked:bg-green-400 checked:size-4 rounded-[5px] border-2 border-gray-500 size-4"
               />
               <p className="font-medium text-nowrap">Medium</p>
             </div>
@@ -41,7 +41,7 @@ function FilterTask() {
                 onChange={() => setFilter({ ...filter, high: !filter.high })}
                 checked={filter.high}
                 type="checkbox"
-                className="appearance-none checked:bg-green-400 checked:size-[16px] rounded-[5px] border-2 border-gray-500 size-[16px]"
+                className="appearance-none checked:bg-green-400 checked:size-4 rounded-[5px] border-2 border-gray-500 size-4"
               />
               <p className="font-medium text-nowrap">High</p>
             </div>
@@ -56,7 +56,7 @@ function FilterTask() {
                 onChange={() => setFilter({ ...filter, open: !filter.open })}
                 checked={filter.open}
                 type="checkbox"
-                className="appearance-none checked:bg-green-400 checked:size-[16px] rounded-[5px] border-2 border-gray-500 size-[16px]"
+                className="appearance-none checked:bg-green-400 checked:size-4 rounded-[5px] border-2 border-gray-500 size-4"
               />
               <p className="font-medium text-nowrap">Open</p>
             </div>
@@ -67,7 +67,7 @@ function FilterTask() {
                 }
                 checked={filter.InProgress}
                 type="checkbox"
-                className="appearance-none checked:bg-green-400 checked:size-[16px] rounded-[5px] border-2 border-gray-500 size-[16px]"
+                className="appearance-none checked:bg-green-400 checked:size-4 rounded-[5px] border-2 border-gray-500 size-4"
               />
               <p className="font-medium text-nowrap">In progress</p>
             </div>
@@ -78,7 +78,7 @@ function FilterTask() {
                 }
                 checked={filter.closed}
                 type="checkbox"
-                className="appearance-none checked:bg-green-400 checked:size-[16px] rounded-[5px] border-2 border-gray-500 size-[16px]"
+                className="appearance-none checked:bg-green-400 checked:size-4 rounded-[5px] border-2 border-gray-500 size-4"
               />
               <p className="font-medium text-nowrap">Closed</p>
             </div>

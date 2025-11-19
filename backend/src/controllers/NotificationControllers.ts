@@ -1,7 +1,11 @@
 import UserSchema from "../models/UserSchema.ts";
 import NotificationSchema from "../models/NotificationSchema.ts";
+import express from "express";
 
-export const createNotification = async (req, res) => {
+type Request = express.Request;
+type Response = express.Response;
+
+export const createNotification = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const { title, description } = req.body;
@@ -22,11 +26,11 @@ export const createNotification = async (req, res) => {
 
     res.json({ message: "Notification created" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-export const deleteNotification = async (req, res) => {
+export const deleteNotification = async (req: Request, res: Response) => {
   const { notificationId } = req.params;
 
   try {
@@ -51,23 +55,27 @@ export const deleteNotification = async (req, res) => {
       message: "Notification elimintated: " + foundedNoti.description,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-export const updateNotification = async (req, res) => {
+export const updateNotification = async (req: Request, res: Response) => {
   const { notificationId } = req.params;
 
-  const foundedNoti = await NotificationSchema.findByIdAndUpdate(
-    notificationId,
-    { read: true },
-    { new: true }
-  );
+  try {
+    const foundedNoti = await NotificationSchema.findByIdAndUpdate(
+      notificationId,
+      { read: true },
+      { new: true }
+    );
 
-  foundedNoti?.save();
+    foundedNoti?.save();
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-export const getNotification = async (req, res) => {
+export const getNotification = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   const foundedUser = await UserSchema.findById(userId).populate({

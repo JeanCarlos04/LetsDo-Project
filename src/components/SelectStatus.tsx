@@ -24,7 +24,7 @@ function SelectStatus({ task }: SelectStatusProps) {
             statusModal: !showTableModals.statusModal,
           })
         }
-        className={`border-1 px-2 py-1  flex items-center gap-2 rounded-lg font-semibold capitalize text-[14px] cursor-pointer text-nowrap ${
+        className={`border px-2 py-1  flex items-center gap-2 rounded-lg font-semibold capitalize text-[14px] cursor-pointer text-nowrap ${
           task.status === "closed"
             ? "text-[#178341f3] font-semibold border-2 border-[#3cc671f3] bg-[#22e08722]"
             : task.status === "in progress"

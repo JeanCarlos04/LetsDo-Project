@@ -24,7 +24,7 @@ function UpdatePriority({ showModal, task }: UpdatePriority) {
               priorityModal: false,
             })
           }
-          className="z-[100] absolute bg-gray-50 shadow-xl border-2 border-gray-200 p-2 rounded-lg flex flex-col gap-3 translate-y-[5px] translate-x-[30px]"
+          className="z-100 absolute bg-gray-50 shadow-xl border-2 border-gray-200 p-2 rounded-lg flex flex-col gap-3 translate-y-[5px] translate-x-[30px]"
         >
           <button
             onClick={() => updateTask(task, { priority: "low" })}

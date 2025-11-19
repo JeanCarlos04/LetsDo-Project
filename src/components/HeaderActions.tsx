@@ -10,10 +10,10 @@ function HeaderActions() {
   const { t } = useTranslation();
   return (
     <>
-      <div className="w-full bg-white p-4 px-6 flex items-center gap-6 shadow-md border-1 border-gray-100 rounded-t-2xl flex-wrap">
+      <div className="w-full bg-white p-4 px-6 flex items-center gap-6 shadow-md border border-gray-100 rounded-t-2xl flex-wrap">
         <input
           type="date"
-          className="border-1 border-gray-100 rounded-md px-2 py-1 shadow"
+          className="border border-gray-100 rounded-md px-2 py-1 shadow"
         />
 
         <div className="relative">
@@ -25,7 +25,7 @@ function HeaderActions() {
                 headerActionsModal: !showTableModals.headerActionsModal,
               })
             }
-            className="bg-white px-2 py-1 rounded-md border-1 border-gray-200 shadow flex items-center gap-2 cursor-pointer"
+            className="bg-white px-2 py-1 rounded-md border border-gray-200 shadow flex items-center gap-2 cursor-pointer"
           >
             <FaRegEye className="text-gray-500 text-lg" />{" "}
             {t("tableHeaderActions.viewButton")}
@@ -42,7 +42,7 @@ function HeaderActions() {
                 headerFilterModal: !showTableModals.headerFilterModal,
               })
             }
-            className="bg-white px-2 py-1 rounded-md border-1 border-gray-200 shadow flex items-center gap-2 cursor-pointer"
+            className="bg-white px-2 py-1 rounded-md border border-gray-200 shadow flex items-center gap-2 cursor-pointer"
           >
             <FiFilter className=" text-gray-500" />
             {t("tableHeaderActions.filterButton")}{" "}

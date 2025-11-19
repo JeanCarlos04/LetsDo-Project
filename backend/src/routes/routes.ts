@@ -4,6 +4,7 @@ import {
   Login,
   getProfile,
   updateProfile,
+  logout,
 } from "../controllers/UserControllers.ts";
 import { authAcess } from "../middlewares/authAcess.ts";
 import {
@@ -23,6 +24,7 @@ import UserSchema from "../models/UserSchema.ts";
 import {
   createSection,
   getSections,
+  getTaskSection,
 } from "../controllers/SectionTasksControllers.ts";
 
 const routes = Router();
@@ -31,6 +33,7 @@ const routes = Router();
 
 routes.post("/createSection/:userId", createSection);
 routes.get("/getSections/:userId", getSections);
+routes.get("/getTaskSection/:sectionId", getTaskSection);
 
 // NOTIFICATIONS APIs
 
@@ -45,10 +48,11 @@ routes.post("/register", Register);
 routes.post("/login", Login);
 routes.get("/getProfile", authAcess, getProfile);
 routes.patch("/updateProfile/:userId", authAcess, updateProfile);
+routes.post("/logout", authAcess, logout);
 
 // TASKS APIs
 
-routes.post("/createTask/:userId", createTask);
+routes.post("/createTask/:sectionId", createTask);
 routes.patch("/updateTasks/:taskId", updateTask);
 routes.get("/filteredTasks", filterTask);
 routes.delete("/deteleTask/:taskId", deleteTask);

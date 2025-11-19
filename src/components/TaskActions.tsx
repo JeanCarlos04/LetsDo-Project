@@ -15,7 +15,7 @@ function TaskActions({ showActionModal, taskId }: MoreActionsProps) {
   return (
     <>
       {showActionModal && (
-        <article className="z-[100] absolute bg-gray-50 shadow-xl border-2 border-gray-200 p-2 rounded-lg flex flex-col gap-2  translate-x-[-120px]">
+        <article className="z-100 absolute bg-gray-50 shadow-xl border-2 border-gray-200 p-2 rounded-lg flex flex-col gap-2  translate-x-[-120px]">
           <button
             onClick={() => deleteTasks(taskId)}
             className="group hover:bg-gray-200 rounded-lg px-2 py-1 cursor-pointer font-semibold flex items-center gap-2 text-nowrap duration-200"

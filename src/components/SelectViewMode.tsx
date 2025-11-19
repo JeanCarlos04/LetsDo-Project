@@ -9,7 +9,7 @@ function SelectViewMode() {
   return (
     <>
       {showTableModals.headerActionsModal && (
-        <article className="absolute w-full bg-white border-1 border-gray-100 shadow flex flex-col rounded-md">
+        <article className="absolute w-full bg-white border border-gray-100 shadow flex flex-col rounded-md">
           <button
             onClick={() => {
               setViewMode("table");

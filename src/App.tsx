@@ -29,13 +29,13 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <Suspense fallback={<div>Error...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/notifications" element={<Notifications />} />
-        <Route path="/section/:id" element={<SectionTasks />} />
+        <Route path={"/section/:id"} element={<SectionTasks />} />
       </Routes>
     </Suspense>
   );

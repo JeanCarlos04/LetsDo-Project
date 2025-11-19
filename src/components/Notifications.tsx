@@ -19,7 +19,10 @@ function Notifications() {
 
     if (showTableModals.notificationModal) {
       setToggleClass("showNotiModal");
-    } else if (showTableModals.notificationModal === false) {
+    } else if (
+      showTableModals.notificationModal === false &&
+      toggleClass === "showNotiModal"
+    ) {
       setToggleClass("hideNotiModal");
 
       const timerRemove = setTimeout(() => {
@@ -46,7 +49,7 @@ function Notifications() {
   return (
     <>
       <div className={`${toggleClass} relative top-0 right-0 z-400`}>
-        <section className="h-[340px] w-[340px] overflow-y-auto rounded-lg shadow absolute top-0 right-0 gap-2 bg-white flex flex-col self-start">
+        <section className="h-[340px] w-[340px] overflow-y-auto rounded-lg shadow-md absolute top-0 right-0 gap-2 bg-white flex flex-col self-start">
           <header className="py-2 pt-3 px-4 flex items-center justify-between">
             <h1 className="font-semibold text-lg">
               {t("notificationModal.title")}

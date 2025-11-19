@@ -19,7 +19,7 @@ function SelectPriority({ task }: SelectPriorityProps) {
             priorityModal: !showTableModals.priorityModal,
           })
         }
-        className={`border-1 px-2 py-1 rounded-lg flex items-center gap-2 font-semibold text-[14px] cursor-pointer capitalize ${
+        className={`border px-2 py-1 rounded-lg flex items-center gap-2 font-semibold text-[14px] cursor-pointer capitalize ${
           task.priority === "low"
             ? "text-[#178341f3]  border-2 border-[#3cc671f3] bg-[#22e08722]"
             : task.priority === "medium"

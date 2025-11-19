@@ -10,7 +10,8 @@
 
   "header": {
     "myTasksTitle": "Mis tareas",
-    "createTaskButton": "Crear tarea"
+    "createTaskButton": "Crear tarea",
+    "createSection": "Crear Seccion"
   },
 
   "tableHeaderActions": {
@@ -45,12 +46,14 @@
 
   "createTaskModal": {
     "title": "Crea tus tareas",
+    "TitleUpdate": "Actualiza tus tareas",
     "addTitle": "Agregar titulo",
     "addDescription": "Agregar descripcion",
     "selectPriority": "Selecciona su prioridad",
     "createButton": "Crear",
     "titleInpuPlaceholder": "Titulo de la tarea",
-    "descriptionInpuPlaceholder": "Descripcion de la tarea"
+    "descriptionInpuPlaceholder": "Descripcion de la tarea",
+    "buttonEdit": "Editar"
   },
 
   "inputPlaceholder": "Buscar tareas",

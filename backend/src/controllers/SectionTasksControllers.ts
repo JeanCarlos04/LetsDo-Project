@@ -1,8 +1,13 @@
+import { populate } from "dotenv";
 import SectionTasksSchema from "../models/SectionTasksSchema.ts";
 import UserSchema from "../models/UserSchema.ts";
+import express from "express";
 
-export const createSection = async (req, res) => {
-  const { title } = req.body;
+type Request = express.Request;
+type Response = express.Response;
+
+export const createSection = async (req: Request, res: Response) => {
+  const { title, description } = req.body;
   const { userId } = req.params;
 
   const foundedUser = await UserSchema.findById(userId);
@@ -12,6 +17,7 @@ export const createSection = async (req, res) => {
 
   const createSection = await SectionTasksSchema.create({
     title: title,
+    description: description,
     user: userId,
   });
 
@@ -24,12 +30,36 @@ export const createSection = async (req, res) => {
   return res.json(createSection);
 };
 
-export const getSections = async (req, res) => {
+export const getSections = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
-  const foundedSection = await UserSchema.findById(userId).populate(
-    "task_sections"
-  );
+  try {
+    const foundedSection = await UserSchema.findById(userId).populate([
+      { path: "task_sections", populate: { path: "tasks" } },
+    ]);
 
-  res.json(foundedSection?.task_sections);
+    if (!foundedSection)
+      return res.status(404).json({ message: "Sections not founded" });
+
+    res.json(foundedSection?.task_sections);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getTaskSection = async (req: Request, res: Response) => {
+  const { sectionId } = req.params;
+
+  try {
+    const foundedSection = await SectionTasksSchema.findById(
+      sectionId
+    ).populate("tasks");
+
+    if (!foundedSection)
+      return res.status(404).json({ message: "Sections not founded" });
+
+    res.json(foundedSection);
+  } catch (err) {
+    console.error(err);
+  }
 };

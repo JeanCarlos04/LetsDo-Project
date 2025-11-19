@@ -1,9 +1,12 @@
 import UserSchema from "../models/UserSchema.ts";
 import bcrypt from "bcryptjs";
-import { populate } from "dotenv";
 import jwt from "jsonwebtoken";
+import express from "express";
 
-export const Register = async (req, res) => {
+type Request = express.Request;
+type Response = express.Response;
+
+export const Register = async (req: Request, res: Response) => {
   try {
     const { user, email, password } = req.body;
 
@@ -22,47 +25,69 @@ export const Register = async (req, res) => {
   }
 };
 
-export const Login = async (req, res) => {
+export const Login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const foundedUser = await UserSchema.findOne({ email });
-  if (!foundedUser) return res.status(404).json({ message: "User not found" });
+  try {
+    const foundedUser = await UserSchema.findOne({ email });
+    if (!foundedUser)
+      return res.status(404).json({ message: "User not found" });
 
-  const isMatch = await bcrypt.compare(password, foundedUser.password);
-  if (!isMatch) return res.status(404).json({ message: "Invalid password" });
+    const isMatch = await bcrypt.compare(password, foundedUser.password);
+    if (!isMatch) return res.status(404).json({ message: "Invalid password" });
 
-  const token = jwt.sign({ id: foundedUser._id }, process.env.JWT_SECRET!, {
-    expiresIn: "1h",
-  });
+    const token = jwt.sign({ id: foundedUser._id }, process.env.JWT_SECRET!, {
+      expiresIn: "1h",
+    });
 
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
 
-  res.json({ message: "Logged succesfully" });
+    res.json({ message: "Logged succesfully" });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-export const getProfile = async (req, res) => {
-  const myUser = await UserSchema.findById(req.userId).populate([
-    { path: "tasks" },
-    { path: "notifications" },
-  ]);
-  if (!myUser) return res.status(404).json({ message: "User not found" });
+interface RequestType extends Request {
+  userId?: String;
+}
 
-  res.json(myUser);
+export const getProfile = async (req: RequestType, res: Response) => {
+  try {
+    const myUser = await UserSchema.findById(req.userId).populate([
+      { path: "notifications" },
+    ]);
+    if (!myUser) return res.status(404).json({ message: "User not found" });
+
+    res.json(myUser);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req: Request, res: Response) => {
   const { userId } = req.params;
   const { updates } = req.body;
 
-  const foundedUser = await UserSchema.findByIdAndUpdate(
-    userId,
-    { $set: updates },
-    { new: true }
-  );
+  try {
+    const foundedUser = await UserSchema.findByIdAndUpdate(
+      userId,
+      { $set: updates },
+      { new: true }
+    );
 
-  res.json(foundedUser);
+    res.json(foundedUser);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  res.clearCookie("token");
+
+  res.status(200).json({ message: "Logged out successfully" });
 };

@@ -21,6 +21,10 @@ function Pagination({
 }: PaginationProps) {
   const { t } = useTranslation();
 
+  const visibleCounts = 5;
+  const start = Math.max(0, currentPage - 5);
+  const end = start + visibleCounts;
+
   return (
     <>
       <div
@@ -64,7 +68,7 @@ function Pagination({
           >
             <FaAngleLeft className="text-lg" />
           </button>
-          {pages.map((page) => {
+          {pages.slice(start, end).map((page) => {
             return (
               <button
                 key={page}
@@ -81,7 +85,9 @@ function Pagination({
           })}
           <button
             onClick={() =>
-              currentPage >= 3 ? null : setCurrentPage(currentPage + 1)
+              currentPage >= pages.length
+                ? null
+                : setCurrentPage(currentPage + 1)
             }
             className="cursor-pointer p-2"
           >

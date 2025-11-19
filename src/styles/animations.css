@@ -119,3 +119,7 @@
 .showLanguageModal {
   animation: ShowLanguageModal forwards 0.5s ease;
 }
+
+.showAsideModal {
+  animation: ShowLanguageModal forwards 0.5s ease;
+}

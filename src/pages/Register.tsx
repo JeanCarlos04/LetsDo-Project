@@ -67,7 +67,7 @@ function Register() {
                 },
               })}
               placeholder="Example: jhondoe@gmail.com"
-              className="p-1 w-full pl-4 border-b-1 border-gray-400 appearance-none focus:outline-none 2xl:h-12"
+              className="p-1 w-full pl-4 border-b border-gray-400 appearance-none focus:outline-none 2xl:h-12"
               type="text"
             />
             <span className="text-red-500 pt-3">{errors.user?.message}</span>
@@ -83,7 +83,7 @@ function Register() {
                 },
               })}
               placeholder="Example: jhondoe@gmail.com"
-              className="p-1 w-full pl-4 border-b-1 border-gray-400 appearance-none focus:outline-none 2xl:h-12"
+              className="p-1 w-full pl-4 border-b border-gray-400 appearance-none focus:outline-none 2xl:h-12"
               type="email"
             />
             <span className="text-red-500 pt-3">{errors.email?.message}</span>
@@ -99,7 +99,7 @@ function Register() {
                 },
               })}
               placeholder="Example: Jhondoe123-"
-              className="p-1 appearance-none w-full pl-4 bg-transparent border-b-1 border-gray-400 focus:outline-none 2xl:h-12"
+              className="p-1 appearance-none w-full pl-4 bg-transparent border-b border-gray-400 focus:outline-none 2xl:h-12"
               type="password"
             />
             <span className="text-red-500 pt-3">

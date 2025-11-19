@@ -10,7 +10,9 @@ const UserSchema = new mongoose.Schema(
     },
     email: { type: String, required: true, trim: true, unique: true },
     password: { type: String, required: true, trim: true },
-    tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "task" }],
+    task_sections: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "task_section" },
+    ],
     notifications: [
       {
         type: mongoose.Schema.Types.ObjectId,

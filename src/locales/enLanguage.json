@@ -10,7 +10,8 @@
 
   "header": {
     "myTasksTitle": "My tasks",
-    "createTaskButton": "Create task"
+    "createTaskButton": "Create task",
+    "createSection": "Add Section"
   },
 
   "tableHeaderActions": {
@@ -45,12 +46,14 @@
 
   "createTaskModal": {
     "title": "Create your tasks",
+    "TitleUpdate": "Update your tasks",
     "addTitle": "Add title",
     "addDescription": "Add description",
     "selectPriority": "Select its priority",
     "createButton": "Create",
     "titleInpuPlaceholder": "Task title",
-    "descriptionInpuPlaceholder": "Task description"
+    "descriptionInpuPlaceholder": "Task description",
+    "buttonEdit": "Edit"
   },
 
   "inputPlaceholder": "Search tasks",
