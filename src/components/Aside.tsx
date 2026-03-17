@@ -6,12 +6,13 @@ import { useTranslation } from "react-i18next";
 import {
   FaImage,
   FaBars,
-  FaRegUser,
+  FaRegCommentDots,
+  // FaRegUser,
   FaListCheck,
   FaSquareCheck,
   FaAngleRight,
   FaMagnifyingGlass,
-  FaChartColumn,
+  // FaChartColumn,
   FaLanguage,
   FaAngleDown,
 } from "react-icons/fa6";
@@ -65,17 +66,9 @@ function Aside() {
           )}
           <div className="flex flex-col items-center gap-12 w-full">
             <header className="pt-8">
-              <h2
-                onClick={() =>
-                  setShowTableModals({
-                    ...showTableModals,
-                    updateProfileModal: !showTableModals.updateProfileModal,
-                  })
-                }
-                className="text-2xl font-semibold flex items-center gap-2"
-              >
+              <h1 className="text-2xl font-semibold flex items-center gap-2">
                 Let's Do <FaSquareCheck className="text-blue-600" />
-              </h2>
+              </h1>
             </header>
             <div className="w-full flex flex-col gap-4 relative">
               <input
@@ -93,7 +86,7 @@ function Aside() {
                     <FaListCheck className="text-[18px]" /> {t("aside.myTasks")}
                   </Link>
                 </li>
-                <li className="group font-medium mx-4 rounded-md py-1.5 hover:bg-[#3d7dde3a] duration-200 cursor-pointer">
+                {/* <li className="group font-medium mx-4 rounded-md py-1.5 hover:bg-[#3d7dde3a] duration-200 cursor-pointer">
                   <Link
                     to="/a"
                     className="flex gap-3 items-center pl-4 group-hover:translate-x-4 duration-200"
@@ -101,8 +94,17 @@ function Aside() {
                     <FaChartColumn className="text-[18px]" />{" "}
                     {t("aside.estadistics")}
                   </Link>
-                </li>
+                </li> */}
                 <li className="group font-medium mx-4 rounded-md py-1.5 hover:bg-[#3d7dde3a] duration-200 cursor-pointer">
+                  <Link
+                    to="/connections"
+                    className="flex gap-3 items-center pl-4 group-hover:translate-x-4 duration-200"
+                  >
+                    <FaRegCommentDots className="text-[18px]" />{" "}
+                    {t("aside.Connections")}
+                  </Link>
+                </li>
+                {/* <li className="group font-medium mx-4 rounded-md py-1.5 hover:bg-[#3d7dde3a] duration-200 cursor-pointer">
                   <Link
                     to="/e"
                     className="flex gap-3 items-center pl-4 group-hover:translate-x-4 duration-200"
@@ -110,7 +112,7 @@ function Aside() {
                     {" "}
                     <FaRegUser className="text-[18px]" /> {t("aside.profile")}
                   </Link>
-                </li>
+                </li> */}
                 <li
                   onClick={() =>
                     setShowTableModals({

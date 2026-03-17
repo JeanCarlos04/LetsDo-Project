@@ -5,11 +5,13 @@
     "notifications": "Notifications",
     "profile": "Profile",
     "settings": "Settings",
-    "languages": "Languages"
+    "languages": "Languages",
+    "Connections": "Connections"
   },
 
   "header": {
     "myTasksTitle": "My tasks",
+    "connectionsTitle": "Connections",
     "createTaskButton": "Create task",
     "createSection": "Add Section"
   },

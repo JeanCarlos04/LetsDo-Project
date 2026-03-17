@@ -11,6 +11,20 @@ function Notifications() {
   const firstRender = useRef(true);
   const { t } = useTranslation();
 
+  const handleMarkRead = async (notificationId: Notification["_id"]) => {
+    const res = await fetch(
+      `http://localhost:3000/updateNotification/${notificationId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+      }
+    );
+
+    refreshUI();
+    await res.json();
+  };
+
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -65,7 +79,11 @@ function Notifications() {
                 {myProfile?.notifications.map((noti) => {
                   return (
                     <article
-                      className="hover:bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-4"
+                      className={`${
+                        noti.read === true
+                          ? "backdrop-brightness-90 hover:bg-gray-300"
+                          : ""
+                      } hover:bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-4`}
                       key={noti._id}
                     >
                       <div className="flex items-center gap-4">
@@ -88,7 +106,7 @@ function Notifications() {
                         </div>
                       </div>
                       <div className="flex flex-col justify-center gap-6">
-                        <button>
+                        <button onClick={() => handleMarkRead(noti._id)}>
                           {noti.read ? (
                             <FaRegEye className="text-lg text-gray-600" />
                           ) : (

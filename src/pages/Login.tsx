@@ -25,7 +25,8 @@ function Login() {
         body: JSON.stringify({ email: email, password: password }),
         credentials: "include",
       });
-      await res.json();
+      const data = await res.json();
+      localStorage.setItem("token", data.token);
       navigateTo("");
       window.location.reload();
     } catch (err) {

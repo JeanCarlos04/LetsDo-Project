@@ -14,6 +14,7 @@ import {
   FaEllipsis,
   FaPlus,
   FaCalendarXmark,
+  FaCalendarDays,
 } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import type { Sections } from "./SectionList";
@@ -25,8 +26,13 @@ type TableProps = {
 function Table({ sectionData }: TableProps) {
   const { tasks } = sectionData;
   const [task, setTask] = useState<TasksType[]>([]);
-  const { setShowTableModals, showTableModals, filteredTasks, filter } =
-    useContextHook();
+  const {
+    setShowTableModals,
+    showTableModals,
+    filteredTasks,
+    filter,
+    filterByDate,
+  } = useContextHook();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -50,10 +56,14 @@ function Table({ sectionData }: TableProps) {
           (filter.closed && task.status === "closed") ||
           (!filter.open && !filter.InProgress && !filter.closed);
 
-        return isMatchPriority && statusMatch;
+        const isMatchExpireDate =
+          new Date(task.expires).toLocaleDateString() ===
+            new Date(filterByDate!).toLocaleDateString() || !filterByDate;
+
+        return isMatchPriority && statusMatch && isMatchExpireDate;
       })
     );
-  }, [filteredTasks, tasks, filter]);
+  }, [filteredTasks, tasks, filter, filterByDate]);
 
   const {
     firstIndex,
@@ -67,7 +77,8 @@ function Table({ sectionData }: TableProps) {
 
   return (
     <>
-      {task.length < 1 ? (
+      {task.length < 1 &&
+      Object.values(filter).every((value) => value === false) ? (
         <section className="flex flex-col items-center gap-6 text-gray-500 h-[300px] justify-center">
           <p className="font-medium text-2xl">
             You don't have task for this section yet.
@@ -85,96 +96,111 @@ function Table({ sectionData }: TableProps) {
 
             <div>
               <HeaderActions />
-
-              <div className="overflow-x-auto md:overflow-visible">
-                <table
-                  role="table"
-                  className="md:w-full shadow-md border border-gray-200"
-                >
-                  <thead className=" bg-gray-100 h-10 border-b border-gray-300">
-                    <tr className="text-start  h-[45px]">
-                      <th className="font-medium text-start pl-5 ">
-                        {t("tableHeader.subject")}
-                      </th>
-                      <th className="font-medium text-start">
-                        {" "}
-                        {t("tableHeader.description")}
-                      </th>
-                      <th className="font-medium text-start">
-                        <div className="h-full flex items-center gap-2">
-                          {t("tableHeader.priority")}{" "}
-                          <FaCircleExclamation className="text-gray-500" />
-                        </div>
-                      </th>
-                      <th className="font-medium text-start">
-                        {" "}
-                        {t("tableHeader.status")}
-                      </th>
-                      <th className="font-medium pr-4">
-                        <FaPlus className="text-gray-500 text-sm" />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {task.slice(firstIndex, lastIndex).map((task) => {
-                      return (
-                        <tr
-                          key={task._id}
-                          className="bg-white overflow-hidden h-[55px] border-b hover:bg-gray-100 border-gray-300 cursor-pointer duration-75"
-                        >
-                          <td className="pl-5 text-[14px] text-nowrap 2xl:text-[16px]">
-                            {task.title}
-                          </td>
-                          <td className="overflow-ellipsis text-[14px] px-4 min-w-[200px] 2xl:text-[16px]">
-                            {task.description}
-                          </td>
-                          <td className="relative md:p-0 pr-4">
-                            <SelectPriority task={task} />
-                            {showTableModals.taskID === task._id && (
-                              <UpdatePriority
-                                task={task._id}
-                                showModal={showTableModals.priorityModal}
-                              />
-                            )}
-                          </td>
-                          <td className="relative md:p-0 pr-4">
-                            <SelectStatus task={task} />
-                            {showTableModals.taskID === task._id && (
-                              <UpdateStatus
-                                task={task._id}
-                                showModal={showTableModals.statusModal}
-                              />
-                            )}
-                          </td>
-                          <td
-                            onClick={() =>
-                              setShowTableModals({
-                                ...showTableModals,
-                                taskID: task._id,
-                                moreActionsModal:
-                                  !showTableModals.moreActionsModal,
-                              })
-                            }
+              {(Object.values(filter).some((value) => value === true) ||
+                task.length > 0) && (
+                <div className="overflow-x-auto md:overflow-visible">
+                  <table
+                    role="table"
+                    className="md:w-full shadow-md border border-gray-200"
+                  >
+                    <thead className=" bg-gray-100 h-10 border-b border-gray-300">
+                      <tr className="text-start  h-[45px]">
+                        <th className="font-medium text-start pl-5 ">
+                          {t("tableHeader.subject")}
+                        </th>
+                        <th className="font-medium text-start">
+                          {" "}
+                          {t("tableHeader.description")}
+                        </th>
+                        <th className="font-medium text-start">
+                          <div className="h-full flex items-center gap-2">
+                            {t("tableHeader.priority")}{" "}
+                            <FaCircleExclamation className="text-gray-500" />
+                          </div>
+                        </th>
+                        <th className="font-medium text-start">
+                          {" "}
+                          {t("tableHeader.status")}
+                        </th>
+                        <th className="font-medium text-start">
+                          <div className="h-full flex items-center gap-2">
+                            Expires in{" "}
+                            <FaCalendarDays className="text-gray-500" />
+                          </div>
+                        </th>
+                        <th className="font-medium pr-1">
+                          <FaPlus className="text-gray-500 text-sm" />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {task.slice(firstIndex, lastIndex).map((task) => {
+                        return (
+                          <tr
+                            key={task._id}
+                            className="bg-white overflow-hidden h-[55px] border-b hover:bg-gray-100 border-gray-300 cursor-pointer duration-75"
                           >
-                            <button>
-                              <FaEllipsis className="text-gray-500 cursor-pointer" />
-                            </button>
-                            {showTableModals.taskID === task._id &&
-                              showTableModals.moreActionsModal === true && (
-                                <TaskActions
-                                  taskId={task._id}
-                                  showActionModal={
-                                    showTableModals.moreActionsModal
-                                  }
+                            <td className="pl-5 text-[14px] text-nowrap 2xl:text-[16px]">
+                              {task.title}
+                            </td>
+                            <td className="overflow-ellipsis text-[14px] px-4 min-w-[200px] 2xl:text-[16px]">
+                              {task.description}
+                            </td>
+                            <td className="relative md:p-0 pr-4">
+                              <SelectPriority task={task} />
+                              {showTableModals.taskID === task._id && (
+                                <UpdatePriority
+                                  task={task._id}
+                                  showModal={showTableModals.priorityModal}
                                 />
                               )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+                            </td>
+                            <td className="relative md:p-0 pr-4">
+                              <SelectStatus task={task} />
+                              {showTableModals.taskID === task._id && (
+                                <UpdateStatus
+                                  task={task._id}
+                                  showModal={showTableModals.statusModal}
+                                />
+                              )}
+                            </td>
+                            <td className="relative md:p-0 pr-4 text-start font-medium">
+                              {
+                                new Date(task.expires)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
+                            </td>
+                            <td
+                              onClick={() =>
+                                setShowTableModals({
+                                  ...showTableModals,
+                                  taskID: task._id,
+                                  moreActionsModal:
+                                    !showTableModals.moreActionsModal,
+                                })
+                              }
+                            >
+                              <button>
+                                <FaEllipsis className="text-gray-500 cursor-pointer" />
+                              </button>
+                              {showTableModals.taskID === task._id &&
+                                showTableModals.moreActionsModal === true && (
+                                  <TaskActions
+                                    taskId={task._id}
+                                    showActionModal={
+                                      showTableModals.moreActionsModal
+                                    }
+                                  />
+                                )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </section>
           <Pagination

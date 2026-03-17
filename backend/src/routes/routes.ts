@@ -5,6 +5,9 @@ import {
   getProfile,
   updateProfile,
   logout,
+  addFriends,
+  getFriends,
+  searchFriendsChat,
 } from "../controllers/UserControllers.ts";
 import { authAcess } from "../middlewares/authAcess.ts";
 import {
@@ -26,6 +29,7 @@ import {
   getSections,
   getTaskSection,
 } from "../controllers/SectionTasksControllers.ts";
+import { getChat } from "../controllers/ChatControllers.ts";
 
 const routes = Router();
 
@@ -49,6 +53,13 @@ routes.post("/login", Login);
 routes.get("/getProfile", authAcess, getProfile);
 routes.patch("/updateProfile/:userId", authAcess, updateProfile);
 routes.post("/logout", authAcess, logout);
+routes.post("/addFriends/:user_id", authAcess, addFriends);
+routes.get("/getAllFriends", authAcess, getFriends);
+routes.get("/searchFriend", authAcess, searchFriendsChat);
+
+// CHAT APIs
+
+routes.post("/getChat/:user_id", authAcess, getChat);
 
 // TASKS APIs
 

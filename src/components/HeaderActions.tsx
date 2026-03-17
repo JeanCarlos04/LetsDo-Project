@@ -6,12 +6,14 @@ import FilterTask from "./FilterTask";
 import { useTranslation } from "react-i18next";
 
 function HeaderActions() {
-  const { setShowTableModals, showTableModals } = useContextHook();
+  const { setShowTableModals, showTableModals, setFilterByDate } =
+    useContextHook();
   const { t } = useTranslation();
   return (
     <>
       <div className="w-full bg-white p-4 px-6 flex items-center gap-6 shadow-md border border-gray-100 rounded-t-2xl flex-wrap">
         <input
+          onChange={(e) => setFilterByDate(new Date(e.target.value))}
           type="date"
           className="border border-gray-100 rounded-md px-2 py-1 shadow"
         />

@@ -9,6 +9,7 @@ const TaskSchema = new mongoose.Schema(
     priority: { type: String, required: true, trim: true },
     status: { type: String, default: "open", trim: true },
     completed: { type: Boolean, required: true, default: false },
+    expires: { type: Date },
   },
   {
     timestamps: true,

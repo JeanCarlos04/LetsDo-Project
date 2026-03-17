@@ -21,6 +21,7 @@ type CreateTaskProps = {
 type FormType = {
   title: string;
   description: string;
+  expires: Date;
 };
 
 function CreateTask({
@@ -45,12 +46,11 @@ function CreateTask({
   const { t } = useTranslation();
 
   const onSubmit = async (data: FormType) => {
-    const { title, description } = data;
-    const sendUpdates = { title, description, priority };
+    const { title, description, expires } = data;
+    const sendUpdates = { title, description, priority, expires };
 
     if (modalLocation === "section") {
       if (isUpdating === true && taskIdToUpdate) {
-        console.log("entro");
         updateTask(taskIdToUpdate, sendUpdates);
       } else if (currentSection) {
         addTask(sendUpdates, currentSection);
@@ -161,6 +161,14 @@ function CreateTask({
                     >
                       High <FaBatteryFull />
                     </button>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <h3 className="font-medium">Expires in:</h3>
+                    <input
+                      {...register("expires")}
+                      type="date"
+                      className="outline-none shadow border border-gray-200 p-1 rounded-md"
+                    />
                   </div>
                 </>
               )}

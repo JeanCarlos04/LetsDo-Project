@@ -8,13 +8,18 @@ import Kanban from "../components/Kanban";
 import ToastModal from "../components/ToastModal";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import type { Sections } from "./SectionList";
+import { useEffect } from "react";
 
 function SectionTasks() {
-  const { showModal, getTaskId, viewMode, setCurrentSection } =
-    useContextHook();
-  const [sectionTasks, setSectionTasks] = useState<Sections>();
+  const {
+    showModal,
+    getTaskId,
+    viewMode,
+    setCurrentSection,
+    setSectionTasks,
+    sectionTasks,
+  } = useContextHook();
+
   const { t } = useTranslation();
   const { id } = useParams();
 
@@ -52,7 +57,11 @@ function SectionTasks() {
 
         {showModal.mode === "create" && <CreateTask modalLocation="section" />}
         {showModal.mode === "update" && (
-          <CreateTask taskIdToUpdate={getTaskId!} isUpdating={true} modalLocation="section"/>
+          <CreateTask
+            taskIdToUpdate={getTaskId!}
+            isUpdating={true}
+            modalLocation="section"
+          />
         )}
       </div>
       <ToastModal />

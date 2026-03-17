@@ -61,6 +61,9 @@ function Kanban({ sectionData }: KanbanProps) {
                 )}
               </div>
             </div>
+            <h3 className="text-sm font-medium">
+              {new Date(task.expires).toLocaleDateString()}
+            </h3>
           </article>
         ))}
     </section>
@@ -75,7 +78,7 @@ function Kanban({ sectionData }: KanbanProps) {
       <div>
         <HeaderActions />
 
-        <div className="flex overflow-x-auto 2xl:gap-24 xl:gap-4 gap-6 2xl:px-8 px-4 2xl:justify-center bg-white py-6">
+        <div className="flex  2xl:gap-24 xl:gap-4 gap-6 2xl:px-8 px-4 2xl:justify-center bg-white py-6">
           {renderKanbanColumn(
             "open",
             "#d6ebff",

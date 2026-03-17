@@ -2,6 +2,8 @@ import UserSchema from "../models/UserSchema.ts";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import express from "express";
+import ChatSchema from "../models/ChatSchema.ts";
+import mongoose from "mongoose";
 
 type Request = express.Request;
 type Response = express.Response;
@@ -46,14 +48,14 @@ export const Login = async (req: Request, res: Response) => {
       sameSite: "lax",
     });
 
-    res.json({ message: "Logged succesfully" });
+    res.json({ token });
   } catch (err) {
     console.error(err);
   }
 };
 
 interface RequestType extends Request {
-  userId?: String;
+  userId?: string;
 }
 
 export const getProfile = async (req: RequestType, res: Response) => {
@@ -90,4 +92,50 @@ export const logout = async (req: Request, res: Response) => {
   res.clearCookie("token");
 
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+export const addFriends = async (req: RequestType, res: Response) => {
+  const { user_id } = req.params;
+  const myUser = await UserSchema.findById(req.userId);
+
+  if (!myUser) return res.status(404).json({ error: "User not founded" });
+
+  const foundedUser = await UserSchema.findById(user_id);
+
+  const isFriendAdded = myUser.friends.find(
+    (friend) => friend._id.toString() === foundedUser?._id.toString()
+  );
+
+  if (isFriendAdded) return res.json({ Error: "This user is already added" });
+
+  const userId_objectId = new mongoose.Types.ObjectId(user_id);
+
+  myUser?.friends.push(userId_objectId);
+  myUser.save();
+
+  await ChatSchema.create({
+    participants: [req.userId, user_id],
+  });
+
+  res.json({ message: "Added succesfully" });
+};
+
+export const getFriends = async (req: RequestType, res: Response) => {
+  const foundedUser = await UserSchema.findById(req.userId).populate("friends");
+
+  res.json(foundedUser);
+};
+
+export const searchFriendsChat = async (req: Request, res: Response) => {
+  const { friendName } = req.query;
+
+  const foundedFriend = await UserSchema.find({
+    user: { $regex: friendName, $options: "i" },
+    user_alias: { $regex: friendName, $options: "i" },
+  });
+
+  if (!foundedFriend)
+    return res.status(404).json({ error: "User not founded" });
+
+  res.json(foundedFriend);
 };

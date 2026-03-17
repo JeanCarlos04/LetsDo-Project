@@ -9,7 +9,7 @@ type Response = express.Response;
 export const createTask = async (req: Request, res: Response) => {
   try {
     const { sectionId } = req.params;
-    const { title, description, priority } = req.body;
+    const { title, description, priority, expires } = req.body;
 
     if (title.length < 3 || description.length < 3)
       return res.status(400).json({
@@ -24,6 +24,7 @@ export const createTask = async (req: Request, res: Response) => {
       title: title,
       description: description,
       priority: priority,
+      expires: expires,
     });
 
     foundedSetion?.tasks.push(createdTask._id);
@@ -39,6 +40,8 @@ export const updateTask = async (req: Request, res: Response) => {
   try {
     const { taskId } = req.params;
     const { updates } = req.body;
+
+    console.log(updates);
 
     const foundedTask = await TasksSchema.findByIdAndUpdate(
       taskId,

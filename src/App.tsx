@@ -7,6 +7,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Notifications = lazy(() => import("./components/Notifications"));
 const SectionTasks = lazy(() => import("./components/SectionTasks"));
+const Connections = lazy(() => import("./pages/Chats"));
 
 function App() {
   const location = useLocation();
@@ -22,6 +23,9 @@ function App() {
       case "/register":
         document.title = "Let's Do | Register";
         break;
+      case "/connections":
+        document.title = "Let's Do | Connections";
+        break;
       case "/notifications":
         document.title = "Let's Do | Notifications";
         break;
@@ -36,6 +40,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path={"/section/:id"} element={<SectionTasks />} />
+        <Route path={"/connections"} element={<Connections />} />
       </Routes>
     </Suspense>
   );

@@ -21,6 +21,7 @@ type UpdateTaskAtributtes = {
   description?: string;
   priority?: string;
   status?: string;
+  expires: Date;
 };
 
 type ModalState = {
@@ -38,7 +39,7 @@ type ContextTypes = {
   getTasks: TasksType[];
   addTask: (
     taskValues: UpdateTaskAtributtes,
-    sectionId: Sections["_id"]
+    sectionId: Sections["_id"],
   ) => void;
   updateTask: (taskId: TasksType["_id"], updates: UpdateTaskAtributtes) => void;
   setShowTableModals: React.Dispatch<
@@ -103,6 +104,10 @@ type ContextTypes = {
   currentSection: string | undefined;
   handleCreateSections: (title: string, description: string) => void;
   sendProfileImg: (file: File) => Promise<void>;
+  setSectionTasks: Dispatch<SetStateAction<Sections | undefined>>;
+  sectionTasks: Sections | undefined;
+  setFilterByDate: Dispatch<SetStateAction<Date | undefined>>;
+  filterByDate: Date | undefined;
 };
 
 const defaultValues: ContextTypes = {
@@ -156,6 +161,10 @@ const defaultValues: ContextTypes = {
   currentSection: undefined,
   handleCreateSections: () => {},
   sendProfileImg: async () => {},
+  setSectionTasks: () => {},
+  sectionTasks: undefined,
+  setFilterByDate: () => {},
+  filterByDate: undefined,
 };
 
 const MainContext = createContext(defaultValues);
@@ -184,7 +193,10 @@ const MainContextProvider = ({ children }: ContextProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksType[]>([]);
   const [getTaskId, setGetTaskId] = useState<TasksType["_id"] | null>(null);
   const [showAside, setShowAside] = useState(true);
-  const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const viewModeStorage = localStorage.getItem("viewMode");
+    return viewModeStorage ? JSON.parse(viewModeStorage) : "table";
+  });
   const [toastModal, setToastModal] = useState<ToastModal | undefined>();
   const [filter, setFilter] = useState({
     low: false,
@@ -196,6 +208,8 @@ const MainContextProvider = ({ children }: ContextProps) => {
   });
   const [currentSection, setCurrentSection] = useState<Sections["_id"]>();
   const navigate = useNavigate();
+  const [sectionTasks, setSectionTasks] = useState<Sections>();
+  const [filterByDate, setFilterByDate] = useState<Date>();
 
   useEffect(() => {
     fetch("http://localhost:3000/getProfile", {
@@ -217,6 +231,10 @@ const MainContextProvider = ({ children }: ContextProps) => {
       });
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("viewMode", JSON.stringify(viewMode));
+  }, [viewMode]);
+
   const refreshUI = () => {
     fetch("http://localhost:3000/getProfile", {
       method: "GET",
@@ -231,9 +249,9 @@ const MainContextProvider = ({ children }: ContextProps) => {
 
   const addTask = (
     taskValues: UpdateTaskAtributtes,
-    sectionId: Sections["_id"]
+    sectionId: Sections["_id"],
   ) => {
-    const { title, description, priority } = taskValues;
+    const { title, description, priority, expires } = taskValues;
 
     fetch(`http://localhost:3000/createTask/${sectionId}`, {
       method: "POST",
@@ -242,6 +260,7 @@ const MainContextProvider = ({ children }: ContextProps) => {
         title: title,
         description: description,
         priority: priority,
+        expires: expires,
       }),
     })
       .then((res) => res.json())
@@ -252,7 +271,7 @@ const MainContextProvider = ({ children }: ContextProps) => {
 
   const updateTask = (
     taskId: TasksType["_id"],
-    updates: UpdateTaskAtributtes
+    updates: UpdateTaskAtributtes,
   ) => {
     if (
       (updates.title && updates.title.length < 3) ||
@@ -354,6 +373,10 @@ const MainContextProvider = ({ children }: ContextProps) => {
         setCurrentSection,
         handleCreateSections,
         sendProfileImg,
+        sectionTasks,
+        setSectionTasks,
+        filterByDate,
+        setFilterByDate,
       }}
     >
       {children}

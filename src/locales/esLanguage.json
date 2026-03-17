@@ -5,11 +5,13 @@
     "notifications": "Notificaciones",
     "profile": "Perfil",
     "settings": "Configuración",
-    "languages": "Idiomas"
+    "languages": "Idiomas",
+    "Connections": "Conexiones"
   },
 
   "header": {
     "myTasksTitle": "Mis tareas",
+    "connectionsTitle": "Conexiones",
     "createTaskButton": "Crear tarea",
     "createSection": "Crear Seccion"
   },

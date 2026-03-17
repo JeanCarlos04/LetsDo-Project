@@ -9,4 +9,5 @@ export type TasksType = {
   priority: Priority;
   status?: Status;
   completed?: boolean;
+  expires: Date;
 };
