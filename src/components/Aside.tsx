@@ -173,16 +173,16 @@ function Aside() {
                 <label htmlFor="inputImg" className="group relative">
                   <img
                     className="size-[50px] rounded-full group-hover:brightness-75 duration-200 cursor-pointer"
-                    src={myProfile!.avatar_url}
+                    src={myProfile?.avatar_url}
                   />
                   <FaImage className="cursor-pointer text-white absolute hidden duration-200 group-hover:block top-5 left-[15px]" />
                 </label>
                 <div className="flex flex-col justify-center">
                   <h2 className="text-[16px] font-medium">
-                    {myProfile!.user_alias}
+                    {myProfile?.user_alias}
                   </h2>
                   <h3 className="text-[14px] text-gray-500">
-                    @{myProfile!.user}
+                    @{myProfile?.user}
                   </h3>
                 </div>
               </div>

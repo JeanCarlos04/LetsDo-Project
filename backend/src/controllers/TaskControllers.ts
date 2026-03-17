@@ -41,14 +41,12 @@ export const updateTask = async (req: Request, res: Response) => {
     const { taskId } = req.params;
     const { updates } = req.body;
 
-    console.log(updates);
-
     const foundedTask = await TasksSchema.findByIdAndUpdate(
       taskId,
       { $set: updates },
       {
         new: true,
-      }
+      },
     );
 
     if (!foundedTask)
@@ -70,7 +68,7 @@ export const deleteTask = async (req: Request, res: Response) => {
 
     await SectionTasksSchema.updateOne(
       { tasks: taskId },
-      { $pull: { tasks: taskId } }
+      { $pull: { tasks: taskId } },
     );
 
     res.json({ message: "Deleted Task succesfully" });

@@ -1,6 +1,9 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 import "./styles/animations.css";
+import Aside from "./components/Aside";
+import UpdateProfile from "./components/UpdateProfile";
+import ToastModal from "./components/ToastModal";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
@@ -33,16 +36,21 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path={"/section/:id"} element={<SectionTasks />} />
-        <Route path={"/connections"} element={<Connections />} />
-      </Routes>
-    </Suspense>
+    <>
+      <Aside />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path={"/section/:id"} element={<SectionTasks />} />
+          <Route path={"/connections"} element={<Connections />} />
+        </Routes>
+      </Suspense>
+      <UpdateProfile />
+      <ToastModal />
+    </>
   );
 }
 
